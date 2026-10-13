@@ -1,12 +1,12 @@
 # Feuille de route
 
-## Jalon 0 : Fondations *(en cours)*
-- [ ] Repo, licence, doc d'architecture
-- [ ] Workspace Rust : `eloane-hw`, `eloane-session`, `eloane-ctl` + tests
-- [ ] Profil archiso UEFI + conteneur de build Docker
-- [ ] ISO live qui boote dans QEMU jusqu'à la session gamescope
+## Jalon 0 : Fondations *(terminé)*
+- [x] Repo, licence, doc d'architecture
+- [x] Workspace Rust : `eloane-hw`, `eloane-session`, `eloane-ctl` + tests
+- [x] Profil archiso UEFI + conteneur de build Docker
+- [x] ISO live qui boote dans QEMU jusqu'à Steam (repli sur cage en rendu logiciel)
 
-## Jalon 1 : Premier jeu
+## Jalon 1 : Premier jeu *(en cours)*
 - [ ] Boot sur la machine de dev (hybride Intel + RTX 2000 Ada) depuis clé USB
 - [ ] Steam Big Picture fonctionnel : réseau, son, manette
 - [ ] Un jeu DX11 (DXVK) et un jeu DX12 (VKD3D-Proton) lancés via Proton sur le dGPU
@@ -28,4 +28,6 @@
 - [ ] Lanceurs hors Steam (Heroic, Lutris) en option
 
 ## Piste de recherche (long terme, non bloquante)
-- Noyau Rust exposant l'ABI Linux, pour réutiliser Mesa, Wine et le userland existant.
+- **Eloane NT** : noyau Rust compatible Windows x64, capable de charger la pile graphique
+  Microsoft (`dxgkrnl`) et les drivers GPU Windows fournis par l'utilisateur. Non démarrée,
+  voir [eloane-nt.md](eloane-nt.md).

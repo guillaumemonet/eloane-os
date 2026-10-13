@@ -76,4 +76,4 @@ calcule, l'iGPU affiche.
 
 Voir [roadmap.md](roadmap.md) : installation sur disque, image système immuable A/B
 avec mises à jour atomiques, kernel optimisé jeu, et à plus long terme une piste de
-recherche sur un noyau Rust exposant l'ABI Linux.
+recherche sur un noyau Rust compatible Windows ([eloane-nt.md](eloane-nt.md)).
