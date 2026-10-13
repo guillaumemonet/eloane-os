@@ -1,0 +1,43 @@
+#!/bin/bash
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Eloane - SteamOS compatibility stubs.
+#
+# Steam started with -steamos3 believes it runs on SteamOS and calls OS helper
+# scripts (system update, branch selection, BIOS/dock firmware, session switch).
+# When they are missing they exit 127 and the first-run wizard reports
+# "Unable to download, check your network connection". Eloane updates the
+# system with its own tooling, so these helpers only report "nothing to do".
+#
+# Usage: steamos-stub <helper-name> [args...]
+# Update exit codes expected by Steam: 0 updated, 1 error, 7 no update, 8 reboot needed.
+
+name="$1"
+shift || true
+
+log() { logger -t eloane-steamos-stub -- "$name $*" 2>/dev/null || true; }
+log "$@"
+
+case "$name" in
+    steamos-update | holo-update)
+        # --supports-duplicate-detection: capability probe, must succeed.
+        for arg in "$@"; do
+            [ "$arg" = "--supports-duplicate-detection" ] && exit 0
+        done
+        exit 7 ;;
+    steamos-select-branch | holo-select-branch)
+        case "${1:-}" in
+            -c | -l) echo "rel" ;;
+        esac
+        exit 0 ;;
+    jupiter-biosupdate | jupiter-dock-updater | holo-firmware-update | \
+    jupiter-initial-firmware-update | holo-factory-reset-config)
+        exit 0 ;;
+    steamos-session-select)
+        # No desktop session on Eloane: just leave Steam, eloane-session ends cleanly.
+        exec steam -shutdown ;;
+    holo-reboot)
+        exec systemctl reboot ;;
+    *)
+        echo "steamos-stub: unknown helper '$name'" >&2
+        exit 1 ;;
+esac

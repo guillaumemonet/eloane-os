@@ -6,7 +6,7 @@
 #  - "auto" (defaut) : cage si aucun GPU ou uniquement des GPU virtuels (VM),
 #    sinon gamescope ; bascule une fois sur cage si gamescope depasse son
 #    budget de crashs (max_restarts / restart_window_secs).
-#  - "cage" : WLR_RENDERER=pixman WLR_NO_HARDWARE_CURSORS=1 cage -- <command>
+#  - "cage" : WLR_RENDERER=pixman WLR_NO_HARDWARE_CURSORS=1 cage -s -- <command>
 #    (rendu logiciel, pour VM / GPU sans Vulkan).
 #compositor = "auto"
 

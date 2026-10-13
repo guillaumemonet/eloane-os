@@ -29,6 +29,28 @@ file_permissions=(
   ["/home/gamer"]="1000:1000:750"
   ["/home/gamer/.bash_profile"]="1000:1000:644"
   ["/home/gamer/.bashrc"]="1000:1000:644"
+  # SteamOS compatibility stubs (see /usr/lib/eloane/steamos-stub)
+  ["/usr/lib/eloane/steamos-stub"]="0:0:755"
+  ["/usr/bin/steamos-update"]="0:0:755"
+  ["/usr/bin/steamos-select-branch"]="0:0:755"
+  ["/usr/bin/steamos-session-select"]="0:0:755"
+  ["/usr/bin/jupiter-biosupdate"]="0:0:755"
+  ["/usr/bin/jupiter-dock-updater"]="0:0:755"
+  ["/usr/bin/jupiter-initial-firmware-update"]="0:0:755"
+  ["/usr/bin/holo-update"]="0:0:755"
+  ["/usr/bin/holo-select-branch"]="0:0:755"
+  ["/usr/bin/holo-firmware-update"]="0:0:755"
+  ["/usr/bin/holo-reboot"]="0:0:755"
+  ["/usr/bin/holo-factory-reset-config"]="0:0:755"
+  ["/usr/bin/steamos-polkit-helpers/steamos-update"]="0:0:755"
+  ["/usr/bin/steamos-polkit-helpers/steamos-select-branch"]="0:0:755"
+  ["/usr/bin/steamos-polkit-helpers/jupiter-biosupdate"]="0:0:755"
+  ["/usr/bin/steamos-polkit-helpers/jupiter-dock-updater"]="0:0:755"
+  ["/usr/bin/holo-polkit-helpers/holo-update"]="0:0:755"
+  ["/usr/bin/holo-polkit-helpers/holo-select-branch"]="0:0:755"
+  ["/usr/bin/holo-polkit-helpers/holo-firmware-update"]="0:0:755"
+  ["/usr/bin/holo-polkit-helpers/holo-reboot"]="0:0:755"
+  ["/usr/bin/holo-polkit-helpers/holo-factory-reset-config"]="0:0:755"
 )
 # Les binaires eloane-session / eloane-ctl sont injectes par build/build-iso.sh
 # (copie dans airootfs/usr/bin + ajout de leurs entrees ici).

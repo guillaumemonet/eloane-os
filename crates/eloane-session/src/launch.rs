@@ -80,8 +80,9 @@ pub struct Launch {
 ///
 /// - gamescope: `gamescope -e -f [--prefer-vk-device ..] [-W w] [-H h] [extra] -- <command>`
 ///   plus the PRIME offload environment of the render plan;
-/// - cage: `cage -- <command>` with `WLR_RENDERER=pixman WLR_NO_HARDWARE_CURSORS=1`
-///   (gamescope options and GPU selection are ignored).
+/// - cage: `cage -s -- <command>` with `WLR_RENDERER=pixman WLR_NO_HARDWARE_CURSORS=1`
+///   (gamescope options and GPU selection are ignored; `-s` keeps VT switching
+///   available so a text console can be reached with Ctrl+Alt+F2).
 pub fn build_launch(config: &Config, compositor: Compositor, plan: Option<&RenderPlan>) -> Launch {
     match compositor {
         Compositor::Gamescope => {
@@ -105,7 +106,7 @@ pub fn build_launch(config: &Config, compositor: Compositor, plan: Option<&Rende
             }
         }
         Compositor::Cage => {
-            let mut args = vec!["--".to_string()];
+            let mut args = vec!["-s".to_string(), "--".to_string()];
             args.extend(config.command.iter().cloned());
             Launch {
                 program: CAGE.to_string(),
@@ -353,7 +354,7 @@ mod tests {
         let l = build_launch(&config, Compositor::Cage, Some(&nvidia_plan()));
         assert_eq!(
             l.to_string(),
-            "WLR_RENDERER=pixman WLR_NO_HARDWARE_CURSORS=1 cage -- steam -gamepadui -steamos3 -steampal -steamdeck"
+            "WLR_RENDERER=pixman WLR_NO_HARDWARE_CURSORS=1 cage -s -- steam -gamepadui -steamos3 -steampal -steamdeck"
         );
     }
 

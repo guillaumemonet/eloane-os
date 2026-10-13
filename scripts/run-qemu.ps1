@@ -4,6 +4,8 @@
 #   .\scripts\run-qemu.ps1
 #   .\scripts\run-qemu.ps1 -Iso out\eloane-2026.10.13-x86_64.iso -Memory 6G -Cpus 2
 #   .\scripts\run-qemu.ps1 -Accel tcg      # force l'emulation logicielle
+#   .\scripts\run-qemu.ps1 -Logs           # boote l'entree 'Eloane - debug', port serie -> out\serial.log
+#                                          # suivi dans une 2e fenetre, moniteur QEMU sur 127.0.0.1:4444
 #
 # Accelerateur : WHPX (Windows Hypervisor Platform, a activer dans
 # "Fonctionnalites Windows") avec repli automatique sur TCG.
@@ -15,7 +17,8 @@ param(
     [string]$Memory = '8G',
     [int]$Cpus = 4,
     [ValidateSet('auto', 'whpx', 'tcg')]
-    [string]$Accel = 'auto'
+    [string]$Accel = 'auto',
+    [switch]$Logs
 )
 
 $ErrorActionPreference = 'Continue'
@@ -108,6 +111,36 @@ $qemuArgs += @(
     '-device', 'intel-hda',
     '-device', 'hda-duplex,audiodev=snd0'
 )
+
+if ($Logs) {
+    $serialLog = Join-Path $outDir 'serial.log'
+    Set-Content -Path $serialLog -Value '' -Encoding ascii
+    $qemuArgs += @('-serial', "file:$serialLog")
+    # QEMU monitor on localhost, for scripted debugging (sendkey, screendump, info network).
+    $qemuArgs += @('-monitor', 'tcp:127.0.0.1:4444,server,nowait')
+    # Second window following the serial output (kernel, systemd, journal).
+    $tail = "`$host.UI.RawUI.WindowTitle = 'Eloane - logs'; Get-Content -LiteralPath '$serialLog' -Wait"
+    # PS 5.1 Start-Process does not quote array items: pass a single pre-quoted string.
+    Start-Process powershell.exe -ArgumentList "-NoExit -NoProfile -Command `"$tail`""
+    # Pick the "Eloane - debug" boot entry (3rd) automatically once the
+    # systemd-boot menu shows up on the serial port.
+    $null = Start-Job -ArgumentList $serialLog -ScriptBlock {
+        param($log)
+        for ($i = 0; $i -lt 240; $i++) {
+            Start-Sleep -Milliseconds 250
+            $txt = Get-Content -LiteralPath $log -Raw -ErrorAction SilentlyContinue
+            if ($txt -and $txt.Contains('Boot in')) { break }
+        }
+        try {
+            $c = New-Object System.Net.Sockets.TcpClient('127.0.0.1', 4444)
+            $w = New-Object System.IO.StreamWriter($c.GetStream())
+            $w.AutoFlush = $true
+            foreach ($k in @('down', 'down', 'ret')) { $w.WriteLine("sendkey $k"); Start-Sleep -Milliseconds 200 }
+            $c.Close()
+        } catch { }
+    }
+    Write-Host "Logs  : $serialLog (entree de boot 'Eloane - debug' selectionnee automatiquement)"
+}
 
 Write-Host "==> $qemu $($qemuArgs -join ' ')"
 & $qemu @qemuArgs

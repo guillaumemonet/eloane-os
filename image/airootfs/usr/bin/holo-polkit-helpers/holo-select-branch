@@ -1,0 +1,3 @@
+#!/bin/sh
+# Eloane SteamOS compatibility stub, see /usr/lib/eloane/steamos-stub
+exec /usr/lib/eloane/steamos-stub holo-select-branch "$@"
