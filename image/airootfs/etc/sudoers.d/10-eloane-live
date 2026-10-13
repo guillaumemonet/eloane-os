@@ -1,0 +1,2 @@
+# Eloane live : sudo sans mot de passe pour le groupe wheel (ISO live uniquement).
+%wheel ALL=(ALL:ALL) NOPASSWD: ALL

@@ -1,0 +1,15 @@
+# Eloane : donne CAP_SYS_NICE a gamescope (priorite temps reel du compositeur,
+# sinon "No CAP_SYS_NICE, falling back to regular-priority").
+# S'execute pendant pacstrap (build de l'ISO) et a chaque mise a jour de
+# gamescope dans le systeme (le hook est conserve dans l'image).
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Path
+Target = usr/bin/gamescope
+
+[Action]
+Description = Granting CAP_SYS_NICE to gamescope...
+When = PostTransaction
+Depends = libcap
+Exec = /usr/bin/setcap CAP_SYS_NICE=eip /usr/bin/gamescope

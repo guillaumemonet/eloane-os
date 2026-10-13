@@ -1,0 +1,6 @@
+/target/
+/out/
+/work/
+*.iso
+*.qcow2
+*.img

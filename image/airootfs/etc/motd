@@ -1,0 +1,5 @@
+Eloane live - Steam / Proton sur Arch Linux.
+  - La session jeu (gamescope + Steam) demarre automatiquement sur tty1.
+  - Relancer la session : eloane-session      Diagnostic GPU : eloane-ctl
+  - Reseau : nmtui / nmcli      Bluetooth : bluetoothctl
+

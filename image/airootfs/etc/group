@@ -1,0 +1,7 @@
+root:x:0:root
+wheel:x:998:gamer
+audio:x:995:gamer
+input:x:992:gamer
+render:x:987:gamer
+video:x:983:gamer
+gamer:x:1000:

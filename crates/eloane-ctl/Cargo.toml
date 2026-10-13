@@ -1,0 +1,19 @@
+[package]
+name = "eloane-ctl"
+description = "Eloane control and diagnostics CLI"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+
+[[bin]]
+name = "eloane-ctl"
+path = "src/main.rs"
+
+[dependencies]
+eloane-hw.workspace = true
+eloane-session.workspace = true
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+clap.workspace = true

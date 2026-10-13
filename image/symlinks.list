@@ -1,0 +1,33 @@
+# Eloane - liens symboliques a creer dans airootfs avant mkarchiso.
+# Ils ne sont pas stockes dans git (core.symlinks=false sous Windows les
+# transformerait en fichiers texte) : build/build-iso.sh les cree dans la copie
+# de travail du profil.
+# Format : <chemin dans airootfs>  <cible du lien>
+
+# Fuseau horaire
+/etc/localtime  /usr/share/zoneinfo/UTC
+
+# Pas d'automontage des partitions GPT du disque de la machine hote
+/etc/systemd/system-generators/systemd-gpt-auto-generator  /dev/null
+
+# Trousseau pacman initialise au boot (permet pacman -S dans le live)
+/etc/systemd/system/multi-user.target.wants/pacman-init.service  /etc/systemd/system/pacman-init.service
+
+# Synchronisation de l'heure (TLS / Steam)
+/etc/systemd/system/sysinit.target.wants/systemd-timesyncd.service  /usr/lib/systemd/system/systemd-timesyncd.service
+/etc/systemd/system/dbus-org.freedesktop.timesync1.service          /usr/lib/systemd/system/systemd-timesyncd.service
+
+# NetworkManager
+/etc/systemd/system/multi-user.target.wants/NetworkManager.service                /usr/lib/systemd/system/NetworkManager.service
+/etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service                    /usr/lib/systemd/system/NetworkManager-dispatcher.service
+/etc/systemd/system/network-online.target.wants/NetworkManager-wait-online.service /usr/lib/systemd/system/NetworkManager-wait-online.service
+
+# Bluetooth
+/etc/systemd/system/bluetooth.target.wants/bluetooth.service  /usr/lib/systemd/system/bluetooth.service
+/etc/systemd/system/dbus-org.bluez.service                    /usr/lib/systemd/system/bluetooth.service
+
+# PipeWire / WirePlumber (unites utilisateur, equivalent de systemctl --global enable)
+/etc/systemd/user/sockets.target.wants/pipewire.socket           /usr/lib/systemd/user/pipewire.socket
+/etc/systemd/user/sockets.target.wants/pipewire-pulse.socket     /usr/lib/systemd/user/pipewire-pulse.socket
+/etc/systemd/user/pipewire.service.wants/wireplumber.service     /usr/lib/systemd/user/wireplumber.service
+/etc/systemd/user/pipewire-session-manager.service               /usr/lib/systemd/user/wireplumber.service

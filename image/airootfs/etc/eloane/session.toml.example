@@ -1,0 +1,32 @@
+# /etc/eloane/session.toml - configuration optionnelle d'eloane-session.
+# Copier ce fichier en /etc/eloane/session.toml puis decommenter les cles voulues.
+# Toutes les cles sont optionnelles ; une cle inconnue est une erreur.
+
+# Compositeur : "auto" | "gamescope" | "cage".
+#  - "auto" (defaut) : cage si aucun GPU ou uniquement des GPU virtuels (VM),
+#    sinon gamescope ; bascule une fois sur cage si gamescope depasse son
+#    budget de crashs (max_restarts / restart_window_secs).
+#  - "cage" : WLR_RENDERER=pixman WLR_NO_HARDWARE_CURSORS=1 cage -- <command>
+#    (rendu logiciel, pour VM / GPU sans Vulkan).
+#compositor = "auto"
+
+# Commande lancee dans le compositeur (apres "--"). Tableau non vide.
+#command = ["steam", "-gamepadui", "-steamos3", "-steampal", "-steamdeck"]
+
+# Arguments gamescope supplementaires, inseres avant "--" (ignores sous cage).
+#gamescope_args = ["--adaptive-sync", "-r", "120"]
+
+# Resolution de sortie gamescope -W / -H (ignores sous cage).
+# Par defaut : celle de l'ecran.
+#width = 1920
+#height = 1080
+
+# Forcer le GPU de rendu : "vendor:device" en hexadecimal, ou "vendor" seul,
+# prefixe 0x accepte (voir `eloane-ctl`). Exemples : "10de:28b8", "10de", "0x1002".
+#prefer_gpu = "10de:28b8"
+
+# Redemarrages automatiques : au-dela de max_restarts crashs dans une fenetre
+# de restart_window_secs secondes, eloane-session abandonne (code != 0) et
+# l'utilisateur retombe sur un shell (en mode "auto", bascule d'abord sur cage).
+#max_restarts = 3
+#restart_window_secs = 60
